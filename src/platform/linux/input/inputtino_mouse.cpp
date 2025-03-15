@@ -25,7 +25,7 @@ namespace platf::mouse {
 
   void move(input_raw_t *raw, int deltaX, int deltaY) {
     if (raw->XDisplay) {
-      XTestFakeRelativeMotionEvent(raw->XDisplay, deltaX, deltaY, 0);
+      XTestFakeRelativeMotionEvent(raw->XDisplay, deltaX, deltaY, CurrentTime);
     }
   }
 
@@ -34,7 +34,7 @@ namespace platf::mouse {
       (*raw->mouse).move_abs(x, y, touch_port.width, touch_port.height);
     }*/
     if (raw->XDisplay) {
-      XTestFakeMotionEvent(raw->XDisplay, -1, std::round(x), std::round(y), 0);
+      XTestFakeMotionEvent(raw->XDisplay, -1, static_cast<int>(std::round(x)), static_cast<int>(std::round(y)), CurrentTime);
     }
   }
 
@@ -57,18 +57,18 @@ namespace platf::mouse {
     }
 
     if (raw->XDisplay) {
-      XTestFakeButtonEvent(raw->XDisplay, XButtonType, !release, 0);
+      XTestFakeButtonEvent(raw->XDisplay, XButtonType, !release, CurrentTime);
     }
   }
 
   void scroll(input_raw_t *raw, int high_res_distance) {
     if (raw->XDisplay) {
       if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, false, 20);
+        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, true, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, false, CurrentTime);
       } else {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, false, 20);
+        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, true, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, false, CurrentTime);
       }
     }
   }

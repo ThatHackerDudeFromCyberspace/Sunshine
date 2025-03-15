@@ -65,20 +65,22 @@ namespace platf::mouse {
   }
 
   void scroll(input_raw_t *raw, int high_res_distance) {
+    printf("Debug HRD: %i\n", high_res_distance);
     if (raw->XDisplay) {
       if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, Button5, true, CurrentTime);
-        XTestFakeButtonEvent(raw->XDisplay, Button5, false, CurrentTime);
-        XFlush(raw->XDisplay);
-      } else {
         XTestFakeButtonEvent(raw->XDisplay, Button4, true, CurrentTime);
         XTestFakeButtonEvent(raw->XDisplay, Button4, false, CurrentTime);
+        XFlush(raw->XDisplay);
+      } else {
+        XTestFakeButtonEvent(raw->XDisplay, Button5, true, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, Button5, false, CurrentTime);
         XFlush(raw->XDisplay);
       }
     }
   }
-
+  
   void hscroll(input_raw_t *raw, int high_res_distance) {
+    printf("Debug HHRD: %i\n", high_res_distance);
     if (raw->XDisplay) {
       if (high_res_distance > 0) {
         XTestFakeButtonEvent(raw->XDisplay, Button6, true, 0);

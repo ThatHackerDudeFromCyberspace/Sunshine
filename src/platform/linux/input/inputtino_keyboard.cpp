@@ -17,6 +17,9 @@
 
 #include <X11/extensions/XTest.h>
 #include <X11/Xlib.h>
+#include <X11/XKBlib.h>
+#include <X11/keysymdef.h>
+#include <X11/keysym.h>
 
 using namespace std::literals;
 
@@ -153,7 +156,7 @@ namespace platf::keyboard {
 
   void update(input_raw_t *raw, uint16_t modcode, bool release, uint8_t flags) {
     if (raw->XDisplay) {
-      XTestFakeKeyEvent(raw->XDisplay, key_mappings.find(modcode)->second, !release, CurrentTime);
+      XTestFakeKeyEvent(raw->XDisplay, XKeysymToKeycode(raw->XDisplay, modcode), !release, CurrentTime);
       XFlush(raw->XDisplay);
     }
   }

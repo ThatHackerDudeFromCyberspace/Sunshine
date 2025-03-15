@@ -19,6 +19,9 @@
 #include <X11/extensions/XTest.h>
 #include <X11/keysym.h>
 
+#define Button6 6
+#define Button7 7
+
 using namespace std::literals;
 
 namespace platf::mouse {
@@ -42,13 +45,13 @@ namespace platf::mouse {
 
     switch (button) {
       case BUTTON_LEFT:
-        XButtonType = XK_Pointer_Button1;
+        XButtonType = Button1;
         break;
       case BUTTON_MIDDLE:
-        XButtonType = XK_Pointer_Button2;
+        XButtonType = Button2;
         break;
       case BUTTON_RIGHT:
-        XButtonType = XK_Pointer_Button3;
+        XButtonType = Button3;
         break;
       default:
         BOOST_LOG(warning) << "Unknown mouse button: " << button;
@@ -64,27 +67,27 @@ namespace platf::mouse {
   void scroll(input_raw_t *raw, int high_res_distance) {
     if (raw->XDisplay) {
       if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, true, CurrentTime);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, false, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, Button5, true, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, Button5, false, CurrentTime);
         XFlush(raw->XDisplay);
       } else {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, true, CurrentTime);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, false, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, Button4, true, CurrentTime);
+        XTestFakeButtonEvent(raw->XDisplay, Button4, false, CurrentTime);
         XFlush(raw->XDisplay);
       }
     }
   }
 
   void hscroll(input_raw_t *raw, int high_res_distance) {
-    /*if (raw->XDisplay) {
+    if (raw->XDisplay) {
       if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button6, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button6, false, 20);
+        XTestFakeButtonEvent(raw->XDisplay, Button6, true, 0);
+        XTestFakeButtonEvent(raw->XDisplay, Button6, false, 20);
       } else {
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button7, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button7, false, 20);
+        XTestFakeButtonEvent(raw->XDisplay, Button7, true, 0);
+        XTestFakeButtonEvent(raw->XDisplay, Button7, false, 20);
       }
-    }*/
+    }
     return; // @TODO: Figure out horizontal scrolling
   }
 

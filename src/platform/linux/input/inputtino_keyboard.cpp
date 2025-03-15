@@ -337,7 +337,6 @@ static constexpr auto keycodes = init_keycodes();
         return;
       }
 
-      printf("Sending modcode: 0x%x as 0x%x\n", modcode, keycode_x);
       XTestFakeKeyEvent(raw->XDisplay, keycode_x, !release, CurrentTime);
   
       XFlush(raw->XDisplay);

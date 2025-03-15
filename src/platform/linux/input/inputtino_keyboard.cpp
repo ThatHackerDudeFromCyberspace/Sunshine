@@ -153,7 +153,7 @@ namespace platf::keyboard {
 
   void update(input_raw_t *raw, uint16_t modcode, bool release, uint8_t flags) {
     if (raw->XDisplay) {
-      XTestFakeKeyEvent(raw->XDisplay, modcode, !release, CurrentTime);
+      XTestFakeKeyEvent(raw->XDisplay, key_mappings.find(modcode)->second, !release, CurrentTime);
       XFlush(raw->XDisplay);
     }
   }

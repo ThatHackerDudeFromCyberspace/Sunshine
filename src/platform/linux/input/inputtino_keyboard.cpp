@@ -324,13 +324,15 @@ static constexpr auto keycodes = init_keycodes();
 
   void update(input_raw_t *raw, uint16_t modcode, bool release, uint8_t flags) {
     if (raw->XDisplay) {
-
-      auto keycode = keysym(modcode);
-      if(keycode.keysym == UNKNOWN) {
+      if(modcode > keycodes.size()) {
         return;
       }
 
-      const auto keycode_x = XKeysymToKeycode(raw->XDisplay, keycode.keysym);
+      if(keycodes[modcode].keysym == UNKNOWN) {
+        return;
+      }
+
+      const auto keycode_x = XKeysymToKeycode(raw->XDisplay, keycodes[modcode].keysym);
       if(keycode_x == 0) {
         return;
       }

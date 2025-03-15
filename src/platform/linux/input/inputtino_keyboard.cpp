@@ -330,12 +330,7 @@ static constexpr auto keycodes = init_keycodes();
         return;
       }
 
-      Display *xdisplay = ((input_raw_t *)input.get())->display;
-      if(!xdisplay) {
-        return;
-      }
-
-      const auto keycode_x = XKeysymToKeycode(xdisplay, keycode.keysym);
+      const auto keycode_x = XKeysymToKeycode(raw->XDisplay, keycode.keysym);
       if(keycode_x == 0) {
         return;
       }

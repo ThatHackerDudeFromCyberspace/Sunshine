@@ -3,6 +3,7 @@
  * @brief Definitions for inputtino mouse input handling.
  */
 // lib includes
+#include <X11/X.h>
 #include <X11/Xutil.h>
 #include <boost/locale.hpp>
 #include <cmath>
@@ -30,11 +31,8 @@ namespace platf::mouse {
   }
 
   void move_abs(input_raw_t *raw, const touch_port_t &touch_port, float x, float y) {
-    /*if (raw->mouse) {
-      (*raw->mouse).move_abs(x, y, touch_port.width, touch_port.height);
-    }*/
     if (raw->XDisplay) {
-      XTestFakeMotionEvent(raw->XDisplay, -1, static_cast<int>(std::round(x)), static_cast<int>(std::round(y)), CurrentTime);
+      XWarpPointer(raw->XDisplay, None, None, 0, 0, 0, 0, static_cast<int>(std::round(x)), static_cast<int>(std::round(y)));
     }
   }
 

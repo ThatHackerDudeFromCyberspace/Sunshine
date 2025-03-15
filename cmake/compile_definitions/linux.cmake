@@ -162,6 +162,7 @@ if(X11_FOUND)
     add_compile_definitions(SUNSHINE_BUILD_X11)
     include_directories(SYSTEM ${X11_INCLUDE_DIR})
     list(APPEND PLATFORM_LIBRARIES ${X11_LIBRARIES})
+    list(APPEND PLATFORM_LIBRARIES "Xtst")
     list(APPEND PLATFORM_TARGET_FILES
             "${CMAKE_SOURCE_DIR}/src/platform/linux/x11grab.h"
             "${CMAKE_SOURCE_DIR}/src/platform/linux/x11grab.cpp")

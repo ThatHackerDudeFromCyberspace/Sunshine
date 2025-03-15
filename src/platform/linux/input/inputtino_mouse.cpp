@@ -3,7 +3,6 @@
  * @brief Definitions for inputtino mouse input handling.
  */
 // lib includes
-#include <X11/X.h>
 #include <X11/Xutil.h>
 #include <boost/locale.hpp>
 #include <cmath>
@@ -27,12 +26,14 @@ namespace platf::mouse {
   void move(input_raw_t *raw, int deltaX, int deltaY) {
     if (raw->XDisplay) {
       XTestFakeRelativeMotionEvent(raw->XDisplay, deltaX, deltaY, CurrentTime);
+      XFlush(raw->XDisplay);
     }
   }
 
   void move_abs(input_raw_t *raw, const touch_port_t &touch_port, float x, float y) {
     if (raw->XDisplay) {
-      XWarpPointer(raw->XDisplay, None, None, 0, 0, 0, 0, static_cast<int>(std::round(x)), static_cast<int>(std::round(y)));
+      XTestFakeMotionEvent(raw->XDisplay, -1, static_cast<int>(std::round(x)), static_cast<int>(std::round(y)), CurrentTime);
+      XFlush(raw->XDisplay);
     }
   }
 
@@ -56,6 +57,7 @@ namespace platf::mouse {
 
     if (raw->XDisplay) {
       XTestFakeButtonEvent(raw->XDisplay, XButtonType, !release, CurrentTime);
+      XFlush(raw->XDisplay);
     }
   }
 
@@ -64,9 +66,11 @@ namespace platf::mouse {
       if (high_res_distance > 0) {
         XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, true, CurrentTime);
         XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button5, false, CurrentTime);
+        XFlush(raw->XDisplay);
       } else {
         XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, true, CurrentTime);
         XTestFakeButtonEvent(raw->XDisplay, XK_Pointer_Button4, false, CurrentTime);
+        XFlush(raw->XDisplay);
       }
     }
   }

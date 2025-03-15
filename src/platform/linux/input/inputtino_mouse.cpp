@@ -64,33 +64,38 @@ namespace platf::mouse {
     }
   }
 
-  void scroll(input_raw_t *raw, int high_res_distance) {
-    printf("Debug HRD: %i\n", high_res_distance);
-    if (raw->XDisplay) {
-      if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, Button4, true, CurrentTime);
-        XTestFakeButtonEvent(raw->XDisplay, Button4, false, CurrentTime);
-        XFlush(raw->XDisplay);
-      } else {
-        XTestFakeButtonEvent(raw->XDisplay, Button5, true, CurrentTime);
-        XTestFakeButtonEvent(raw->XDisplay, Button5, false, CurrentTime);
-        XFlush(raw->XDisplay);
-      }
+  /**
+  * @brief XTest mouse scroll.
+  * @param input The input_t instance to use.
+  * @param distance How far to scroll
+  * @param button_pos Which mouse button to emulate for positive scroll.
+  * @param button_neg Which mouse button to emulate for negative scroll.
+  *
+  * EXAMPLES:
+  * ```cpp
+  * x_scroll(input, 10, 4, 5);
+  * ```
+  */
+  static void x_scroll(input_raw_t *raw, int distance, int button_pos, int button_neg) {
+    Display *xdisplay = raw->XDisplay;
+    if(!xdisplay) {
+      return;
     }
+  
+    const int button = distance > 0 ? button_pos : button_neg;
+    for(int i = 0; i < abs(distance); i++) {
+      XTestFakeButtonEvent(xdisplay, button, true, CurrentTime);
+      XTestFakeButtonEvent(xdisplay, button, false, CurrentTime);
+    }
+    XFlush(xdisplay);
+  }
+
+  void scroll(input_raw_t *raw, int high_res_distance) {
+    x_scroll(raw, high_res_distance / 120, 4, 5);
   }
   
   void hscroll(input_raw_t *raw, int high_res_distance) {
-    printf("Debug HHRD: %i\n", high_res_distance);
-    if (raw->XDisplay) {
-      if (high_res_distance > 0) {
-        XTestFakeButtonEvent(raw->XDisplay, Button6, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, Button6, false, 20);
-      } else {
-        XTestFakeButtonEvent(raw->XDisplay, Button7, true, 0);
-        XTestFakeButtonEvent(raw->XDisplay, Button7, false, 20);
-      }
-    }
-    return; // @TODO: Figure out horizontal scrolling
+    x_scroll(raw, high_res_distance / 120, 6, 7);
   }
 
   util::point_t get_location(input_raw_t *raw) {

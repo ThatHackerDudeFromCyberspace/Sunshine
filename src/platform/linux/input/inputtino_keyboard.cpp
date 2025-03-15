@@ -156,6 +156,7 @@ namespace platf::keyboard {
 
   void update(input_raw_t *raw, uint16_t modcode, bool release, uint8_t flags) {
     if (raw->XDisplay) {
+      printf("Sending modcode: 0x%x\n", modcode);
       XTestFakeKeyEvent(raw->XDisplay, XKeysymToKeycode(raw->XDisplay, modcode), !release, CurrentTime);
       XFlush(raw->XDisplay);
     }

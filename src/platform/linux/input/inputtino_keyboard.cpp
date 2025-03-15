@@ -15,6 +15,9 @@
 #include "src/platform/common.h"
 #include "src/utility.h"
 
+#include <X11/extensions/XTest.h>
+#include <X11/Xlib.h>
+
 using namespace std::literals;
 
 namespace platf::keyboard {
@@ -149,12 +152,9 @@ namespace platf::keyboard {
   };
 
   void update(input_raw_t *raw, uint16_t modcode, bool release, uint8_t flags) {
-    if (raw->keyboard) {
-      if (release) {
-        (*raw->keyboard).release(modcode);
-      } else {
-        (*raw->keyboard).press(modcode);
-      }
+    if (raw->XDisplay) {
+      XTestFakeKeyEvent(raw->XDisplay, modcode, !release, CurrentTime);
+      XFlush(raw->XDisplay);
     }
   }
 

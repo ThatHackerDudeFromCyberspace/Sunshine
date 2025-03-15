@@ -6,6 +6,7 @@
 
 // lib includes
 #include <boost/locale.hpp>
+#include <cstddef>
 #include <inputtino/input.hpp>
 #include <libevdev/libevdev.h>
 
@@ -14,6 +15,8 @@
 #include "src/logging.h"
 #include "src/platform/common.h"
 #include "src/utility.h"
+
+#include <X11/Xlib.h>
 
 using namespace std::literals;
 
@@ -42,6 +45,9 @@ namespace platf {
           .version = 0x111,
         })),
         gamepads(MAX_GAMEPADS) {
+
+      XDisplay = XOpenDisplay(NULL);
+
       if (!mouse) {
         BOOST_LOG(warning) << "Unable to create virtual mouse: " << mouse.getErrorMessage();
       }
@@ -55,6 +61,7 @@ namespace platf {
     // All devices are wrapped in Result because it might be that we aren't able to create them (ex: udev permission denied)
     inputtino::Result<inputtino::Mouse> mouse;
     inputtino::Result<inputtino::Keyboard> keyboard;
+    Display* XDisplay = NULL;
 
     /**
      * A list of gamepads that are currently connected.

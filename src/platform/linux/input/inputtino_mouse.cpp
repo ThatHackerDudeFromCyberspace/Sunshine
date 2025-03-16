@@ -91,11 +91,11 @@ namespace platf::mouse {
   }
 
   void scroll(input_raw_t *raw, int high_res_distance) {
-    x_scroll(raw, high_res_distance / 120, 4, 5);
+    x_scroll(raw, high_res_distance / 60, 4, 5);
   }
   
   void hscroll(input_raw_t *raw, int high_res_distance) {
-    x_scroll(raw, high_res_distance / 120, 6, 7);
+    x_scroll(raw, high_res_distance / 60, 6, 7);
   }
 
   util::point_t get_location(input_raw_t *raw) {

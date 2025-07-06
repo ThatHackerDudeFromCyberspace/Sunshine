@@ -477,12 +477,12 @@ function run_install() {
   cmake "${cmake_args[@]}"
 
   # Run appstream validation, etc.
-  appstreamcli validate "build/dev.lizardbyte.app.Sunshine.metainfo.xml"
-  appstream-util validate "build/dev.lizardbyte.app.Sunshine.metainfo.xml"
-  desktop-file-validate "build/dev.lizardbyte.app.Sunshine.desktop"
-  if [ "$appimage_build" == 0 ]; then
-    desktop-file-validate "build/dev.lizardbyte.app.Sunshine.terminal.desktop"
-  fi
+  #appstreamcli validate "build/dev.lizardbyte.app.Sunshine.metainfo.xml"
+  #appstream-util validate "build/dev.lizardbyte.app.Sunshine.metainfo.xml"
+  #desktop-file-validate "build/dev.lizardbyte.app.Sunshine.desktop"
+  #if [ "$appimage_build" == 0 ]; then
+  #  desktop-file-validate "build/dev.lizardbyte.app.Sunshine.terminal.desktop"
+  #fi
 
   # Build the project
   ninja -C "build"

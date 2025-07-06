@@ -8,6 +8,7 @@
 
 // local includes
 #include "inputtino_common.h"
+#include "inputtino_gamepad.h"
 #include "inputtino_keyboard.h"
 #include "inputtino_mouse.h"
 #include "inputtino_pen.h"
@@ -79,22 +80,33 @@ namespace platf {
   }
 
   int alloc_gamepad(input_t &input, const gamepad_id_t &id, const gamepad_arrival_t &metadata, feedback_queue_t feedback_queue) {
-    return -1;
+    auto raw = (input_raw_t *) input.get();
+    return platf::gamepad::alloc(raw, id, metadata, feedback_queue);
   }
 
   void free_gamepad(input_t &input, int nr) {
+    auto raw = (input_raw_t *) input.get();
+    platf::gamepad::free(raw, nr);
   }
 
   void gamepad_update(input_t &input, int nr, const gamepad_state_t &gamepad_state) {
+    auto raw = (input_raw_t *) input.get();
+    platf::gamepad::update(raw, nr, gamepad_state);
   }
 
   void gamepad_touch(input_t &input, const gamepad_touch_t &touch) {
+    auto raw = (input_raw_t *) input.get();
+    platf::gamepad::touch(raw, touch);
   }
 
   void gamepad_motion(input_t &input, const gamepad_motion_t &motion) {
+    auto raw = (input_raw_t *) input.get();
+    platf::gamepad::motion(raw, motion);
   }
 
   void gamepad_battery(input_t &input, const gamepad_battery_t &battery) {
+    auto raw = (input_raw_t *) input.get();
+    platf::gamepad::battery(raw, battery);
   }
 
   platform_caps::caps_t get_capabilities() {
@@ -116,6 +128,6 @@ namespace platf {
   }
 
   std::vector<supported_gamepad_t> &supported_gamepads(input_t *input) {
-    return platf::supported_gamepads(nullptr);
+    return platf::gamepad::supported_gamepads(input);
   }
 }  // namespace platf
